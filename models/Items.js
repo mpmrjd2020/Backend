@@ -1,6 +1,6 @@
 const mongoose = require('../db/connections')
 
-const itemsSchema = new mongoose({
+const itemsSchema = new mongoose.Schema({
     item: String,
     iDescription: String,
     cost: Number,

@@ -4,11 +4,11 @@ const EventsSchema = new mongoose.Schema({
     eDescription: String,
     date: {type: Date, default: Date.now},
     location: String,
-    seller:
-        {
-            ref: "Sellers",
-            type: mongoose.Schema.Types.ObjectId
-        },
+    // seller:
+    //     {
+    //         ref: "Sellers",
+    //         type: mongoose.Schema.Types.ObjectId
+    //     },
     items: [
         {
             ref: "Items",
@@ -17,6 +17,6 @@ const EventsSchema = new mongoose.Schema({
     ]
 })
 
-const Events = mongoose.model("Bookmark", EventsSchema)
+const Events = mongoose.model("Events", EventsSchema)
 
 module.exports = Events

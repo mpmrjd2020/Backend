@@ -1,8 +1,8 @@
 const mongoose = require("./connections");
 
-const eventSchema= require("./models/Events");
-const itemSchema = require("./models/Items");
-const sellerSchema = require("./models/Sellers")
+const eventSchema= require("../models/Events");
+const itemSchema = require("../models/Items");
+const sellerSchema = require("../models/Sellers")
 
 // clear the database of records using event and item models
 eventSchema.deleteMany({}).then(() => {
@@ -17,10 +17,9 @@ eventSchema.deleteMany({}).then(() => {
  // create an event
  eventSchema.create({
     eDescription: "Keith Garage Sale",
-    date: ISODate("2020-04-15T09:00:00Z"),
+    date: Date("2020-04-15T09:00:00Z"),
     location: "3000 SE Broadway St., Atlanta, GA",
-    seller: "",
-    items: []
+    seller: ""
     })
     .then(e => {e
  // create an item
@@ -29,10 +28,9 @@ eventSchema.deleteMany({}).then(() => {
         iDescription: "BMongoose Dolomite Men's Fat Tire Bike, 26-inch wheels, 7 speeds, Black",
         cost: 50,
         image: "http://clipart-library.com/data_images/42693.jpg",
-        sold: False,
+        sold: false,
     }).then(it => {
         e.items.push(it.id);
-        e.save();
         console.log("created Bike item");
     });
 
@@ -42,7 +40,7 @@ eventSchema.deleteMany({}).then(() => {
         iDescription: "Solid Wood Executive Desk",
         cost: 80,
         image: "http://clipart-library.com/data_images/148464.png",
-        sold: False
+        sold: false
     }).then((it) => {
         e.items.push(it.id);
         e.save();
@@ -50,14 +48,16 @@ eventSchema.deleteMany({}).then(() => {
     });
 
          // create a seller
-        sellerSchema.create({
-            name: "John Last",
-            event: "e.id"
-        }).then((sell) => {
-            e.items.push(sell.id);
-            e.save();
-            console.log("created seller John Last")
-        })
+        // sellerSchema.create({
+        //     name: "John Last",
+        //     event: e.id
+        // }).then((sell) => {
+        //     console.log('e.id', e.id)
+        //     console.log('sell.id', sell.id)
+        //     e.event = JSON.parse(sell.id);
+        //     e.save();
+        //     console.log("created seller John Last")
+        // })
     })
     })
   })
