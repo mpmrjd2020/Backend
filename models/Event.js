@@ -6,17 +6,17 @@ const EventsSchema = new mongoose.Schema({
     location: String,
     items: [
         {
-            ref: "Items",
+            ref: "Item",
             type: mongoose.Schema.Types.ObjectId
         }
     ]
     ,
     seller: {
-            ref: "Sellers",
+            ref: "Seller",
             type: mongoose.Schema.Types.ObjectId
         }
 })
 
-const Events = mongoose.model("Events", EventsSchema)
+const Event = mongoose.model("Events", EventsSchema)
 
-module.exports = Events
+module.exports = Event

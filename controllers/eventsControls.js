@@ -9,17 +9,23 @@ router.get('/',(req, res) => {
     eventSchema.find({}).then(event => res.json(event))
 })
 
-router.get('/:eventId',(req, res) => {
-    console.log(req.params)
-    eventSchema.findOne({_id: req.params.eventId})
-    .then(
-        event => (
-            res.json(event)
-            // event.items.map(singleE =>
-            //     itemSchema.findById(singleE)
-            //      .then(item => res.json(item))    )
-            // )
-            ))
+// router.get('/:eventId',(req, res) => {
+//     console.log(req.params)
+//     eventSchema.findOne({_id: req.params.eventId})
+//     .then(
+//         event => (
+//             res.json(event)
+//             // event.items.map(singleE =>
+//             //     itemSchema.findById(singleE)
+//             //      .then(item => res.json(item))    )
+//             // )
+//             ))
+// })
+
+router.post('/newEvent/Update',(req, res) => {
+    eventSchema
+    .create(req.body)
+    .then(event => res.json(event))
 })
 
 // router.get('/:eventId/items',(req, res) => {
@@ -33,9 +39,8 @@ router.get('/:eventId',(req, res) => {
 // })
 
 router.post('/sellers',(req, res) => {
-    let newSellers = req.body
-    sellerSchema
-    .create(newSellers)
+    let newSeller = req.body
+    sellerSchema.create(newSeller)
     .then(seller => res.json(seller))
 })
 
