@@ -9,7 +9,7 @@ router.get('/',(req, res) => {
     eventSchema.find({}).then(event => res.json(event))
 })
 
-router.get('/',(req, res) => {
+router.get('/items',(req, res) => {
     itemSchema.find({}).then(item => res.json(item))
 })
 

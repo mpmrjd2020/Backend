@@ -45,20 +45,24 @@ eventSchema.deleteMany({}).then(() => {
         e.items.push(it.id);
         e.save();
         console.log("created Desk item");
+
     });
 
-         // create a seller
+        // create a seller
+
+        // console.log('e.id', e.id)
         // sellerSchema.create({
         //     name: "John Last",
         //     event: e.id
         // }).then((sell) => {
         //     console.log('e.id', e.id)
         //     console.log('sell.id', sell.id)
-        //     e.event = JSON.parse(sell.id);
+        //     e.event = sell.id;
         //     e.save();
         //     console.log("created seller John Last")
         // })
     })
+    .catch(error => console.log(error))
     })
   })
 })
