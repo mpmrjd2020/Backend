@@ -9,11 +9,12 @@ const EventsSchema = new mongoose.Schema({
             ref: "Items",
             type: mongoose.Schema.Types.ObjectId
         }
-    ],
-    // seller: {
-    //         ref: "Sellers"
-    //         type: mongoose.Schema.Types.ObjectId,
-    //     }
+    ]
+    ,
+    seller: {
+            ref: "Sellers",
+            type: mongoose.Schema.Types.ObjectId
+        }
 })
 
 const Events = mongoose.model("Events", EventsSchema)
