@@ -52,6 +52,7 @@ router.post("/new-event", (req, res) => {
   });
   
 
+<<<<<<< HEAD
 // router.post('/',(req, res) => {
 //     console.log(req)
 //     console.log(req.body.seller)
@@ -77,6 +78,31 @@ router.post("/new-event", (req, res) => {
 //                 newEvent = savedEvent
             
 //         })
+=======
+    function populateSeller() {
+    sellerSchema.create(
+        req.body.seller
+    ).then(seller => {
+        newSeller = seller
+        console.log('newSeller', newSeller)
+    })
+    }
+    
+    async function populateEvent() {
+    await populateSeller()
+    eventSchema.create(
+        req.body.event
+    ).then(event => {
+        event.seller = newSeller._id
+        event.save()
+            console.log('event', event)
+        //     .then(savedEvent => {
+        //         console.log(savedEvent)
+        //         newEvent = savedEvent
+            
+        // })
+    
+>>>>>>> 78f7ef32dde0842370bbe8cf960807278c196cd0
     
 //     // eventSchema.create(req.body.event)
 //     //     .then(newEvent => {
@@ -88,11 +114,31 @@ router.post("/new-event", (req, res) => {
 
 //     //         newEvent.save()
              
+<<<<<<< HEAD
 //     //         res.json(newEvent)
 //     //         res.json(newSeller)
 //     //     })
 //     })
 //     // .catch(error => res.json(error))
+=======
+    //         res.json(newEvent)
+    //         res.json(newSeller)
+    //     })
+    })}
+
+    populateEvent()
+    // .catch(error => res.json(error))
+})
+
+// router.get('/:eventId/items',(req, res) => {
+//     eventSchema.find({_id: req.params.eventId})
+//         .then(
+//             (event) => res.json(event),
+//             itemSchema.find(`/${req.params.items}}`) 
+//             .then(item => res.json(item)
+//             )
+//         )
+>>>>>>> 78f7ef32dde0842370bbe8cf960807278c196cd0
 // })
 
 // // router.get('/:eventId/items',(req, res) => {
