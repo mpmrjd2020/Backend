@@ -2,6 +2,8 @@ const express = require("express")
 const router = express.Router()
 
 const eventSchema= require("../models/Event");
+const Event= require("../models/Event");
+const Seller = require("../models/Seller")
 const itemSchema = require("../models/Item");
 const sellerSchema = require("../models/Seller")
 
@@ -22,58 +24,86 @@ router.get('/:eventId',(req, res) => {
             ))
 })
 
-router.post('/',(req, res) => {
-    console.log(req)
-    console.log(req.body.seller)
+// CREATE EVENT
+router.post("/new-event", (req, res) => {
+    Event.create(req.body.events).then(newEvent => {
+      Seller.create(req.body.seller).then(newSeller => {
+        console.log(newSeller._id)
+        console.log(newEvent._id)
+        // push new bookmark id into user.favorites array
+        newEvent.seller.push(newSeller._id);
+        // push new user id into bookmark.favorited array
+        newSeller.events.push(newEvent._id);
+  
+        // save both or they wont persist
+        newEvent.save();
+        newSeller.save();
+        // send entire document back
+        res.json(newEvent);
+      });
+    });
+  });
 
-    let newSeller = {}
-    let newEvent = {}
+  // DELETE EVENT BY ID
+  router.delete("/:id", (req, res) => {
+    Event.findOneAndDelete({ _id: req.params.id }).then(deleted => {
+      res.json(deleted);
+    });
+  });
+  
 
-    sellerSchema.create(
-        req.body.seller
-    ).then(seller => {
-        newSeller = seller
-        console.log('newSeller', newSeller)
-    })
+// router.post('/',(req, res) => {
+//     console.log(req)
+//     console.log(req.body.seller)
+
+//     let newSeller = {}
+//     let newEvent = {}
+
+//     sellerSchema.create(
+//         req.body.seller
+//     ).then(seller => {
+//         newSeller = seller
+//         console.log('newSeller', newSeller)
+//     })
     
-    eventSchema.create(
-        req.body.event
-    ).then(event => {
-        event.seller = newSeller._id
-        event.save()
-            console.log(event)
-            .then(savedEvent => {
-                console.log(savedEvent)
-                newEvent = savedEvent
+//     eventSchema.create(
+//         req.body.event
+//     ).then(event => {
+//         event.seller = newSeller._id
+//         event.save()
+//             console.log(event)
+//             .then(savedEvent => {
+//                 console.log(savedEvent)
+//                 newEvent = savedEvent
             
-        })
+//         })
     
-    // eventSchema.create(req.body.event)
-    //     .then(newEvent => {
-    //     sellerSchema.create(req.body.seller)
-    //         .then(newSeller => {
-    //         newSeller.save()})
-    //     .then
-    //         newEvent.seller = newSeller._id
+//     // eventSchema.create(req.body.event)
+//     //     .then(newEvent => {
+//     //     sellerSchema.create(req.body.seller)
+//     //         .then(newSeller => {
+//     //         newSeller.save()})
+//     //     .then
+//     //         newEvent.seller = newSeller._id
 
-    //         newEvent.save()
+//     //         newEvent.save()
              
-    //         res.json(newEvent)
-    //         res.json(newSeller)
-    //     })
-    })
-    // .catch(error => res.json(error))
-})
-
-// router.get('/:eventId/items',(req, res) => {
-//     eventSchema.find({_id: req.params.eventId})
-//         .then(
-//             (event) => res.json(event),
-//             itemSchema.find(`/${req.params.items}}`) 
-//             .then(item => res.json(item)
-//             )
-//         )
+//     //         res.json(newEvent)
+//     //         res.json(newSeller)
+//     //     })
+//     })
+//     // .catch(error => res.json(error))
 // })
+
+// // router.get('/:eventId/items',(req, res) => {
+// //     eventSchema.find({_id: req.params.eventId})
+// //         .then(
+// //             (event) => res.json(event),
+// //             itemSchema.find(`/${req.params.items}}`) 
+// //             .then(item => res.json(item)
+// //             )
+// //         )
+// // })
 
 router.post('/sellers',(req, res) => {
     let newSeller = req.body
