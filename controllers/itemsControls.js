@@ -9,36 +9,36 @@ router.get('/',(req, res) => {
     itemSchema.find({}).then(item => res.json(item))
 })
 
-router.put('/:eventId',(req, res) => {
-    console.log(req)
-    console.log('req params', req.params.eventId)
+// router.put('/:eventId',(req, res) => {
+//     console.log(req)
+//     console.log('req params', req.params.eventId)
 
-    const eventID = req.params.eventId
-    let newItem = {}
-    let updatedEvent = {}
+//     const eventID = req.params.eventId
+//     let newItem = {}
+//     let updatedEvent = {}
 
-    function populateItem() {
-    itemSchema.create(
-        req.body
-    ).then(item => {
-        newItem = item
-        console.log('newSeller', newItem)
-        res.json(newItem)
-    })
-    }
+//     function populateItem() {
+//     itemSchema.create(
+//         req.body
+//     ).then(item => {
+//         newItem = item
+//         console.log('newSeller', newItem)
+//         res.json(newItem)
+//     })
+//     }
     
-    async function updateEvent() {
-    await populateItem()
-    eventSchema.findOne({_id: eventID}).then(updatedEvent => {
-        updatedEvent.items.push(newItem._id)
-        updatedEvent.save()
-            console.log('event', updatedEvent)
+//     async function updateEvent() {
+//     await populateItem()
+//     eventSchema.findOne({_id: eventID}).then(updatedEvent => {
+//         updatedEvent.items.push(newItem._id)
+//         updatedEvent.save()
+//             console.log('event', updatedEvent)
     
-    })}
+//     })}
 
-    updateEvent()
+//     updateEvent()
 
-})
+// })
 
 router.put('/cost/:itemId',(req, res) => {
     const eventID = req.params.itemId

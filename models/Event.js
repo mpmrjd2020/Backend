@@ -11,10 +11,12 @@ const EventsSchema = new mongoose.Schema({
         }
     ]
     ,
-    seller: {
+    seller: 
+        {
             ref: "Seller",
             type: mongoose.Schema.Types.ObjectId
         }
+    
 })
 
 const Event = mongoose.model("Events", EventsSchema)

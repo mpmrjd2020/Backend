@@ -26,6 +26,7 @@ sellerSchema.deleteMany({}).then(() => {
  let newEvent = {}
 
  // create an item
+function populateItem() { 
 itemSchema.create({
     item: "Bike",
     iDescription: "BMongoose Dolomite Men's Fat Tire Bike, 26-inch wheels, 7 speeds, Black",
@@ -38,6 +39,7 @@ itemSchema.create({
     console.log("created Bike item");
 });
 
+
 itemSchema.create({
     item: "Bike",
     iDescription: "BMongoose Dolomite Men's Fat Tire Bike, 26-inch wheels, 7 speeds, Black",
@@ -49,8 +51,9 @@ itemSchema.create({
   
     console.log("created Bike item");
 });
+}
 
-
+function populateSeller() {
 sellerSchema.create({
     name: "John Last",
     // event: e.id
@@ -63,7 +66,9 @@ sellerSchema.create({
     // e.save();
     // console.log("created seller John Last")
 })
- 
+}
+
+async function populateEvent() {
 eventSchema.create({
     eDescription: "Keith Garage Sale",
     date: Date("2020-04-15T09:00:00Z"),
