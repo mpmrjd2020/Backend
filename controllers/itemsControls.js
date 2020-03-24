@@ -1,13 +1,28 @@
-const express = require("express")
-const router = express.Router()
+updatedEvent.items.push(newItem._id)
+updatedEvent.save()
+    console.log('event', updatedEvent)
+    // res.json(updatedEvent)
+//     .then(savedEvent => {
+//         console.log(savedEvent)
+//         newEvent = savedEvent
 
-const eventSchema= require("../models/Event");
-const itemSchema = require("../models/Item");
-const sellerSchema = require("../models/Seller")
-
-router.get('/',(req, res) => {
-    itemSchema.find({}).then(item => res.json(item))
-})
+// })
 
 
-module.exports = router
+// eventSchema.create(req.body.event)
+//     .then(newEvent => {
+//     sellerSchema.create(req.body.seller)
+//         .then(newSeller => {
+//         newSeller.save()})
+//     .then
+//         newEvent.seller = newSeller._id
+
+//         newEvent.save()
+
+//         res.json(newEvent)
+//         res.json(newSeller)
+//     })
+})}
+
+updateEvent()
+// .catch(error => res.json(error))
