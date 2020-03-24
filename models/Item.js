@@ -8,6 +8,6 @@ const itemsSchema = new mongoose.Schema({
     sold: Boolean
 })
 
-const Item = mongoose.model("Items", itemsSchema);
+const Item = mongoose.model("Item", itemsSchema);
 
 module.exports = Item

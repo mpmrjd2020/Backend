@@ -9,7 +9,7 @@ router.get('/',(req, res) => {
     eventSchema.find({}).then(event => res.json(event))
 })
 
-router.get('/:eventId',(req, res) => {
+router.get('/event/:eventId',(req, res) => {
     console.log(req.params)
     eventSchema.findOne({_id: req.params.eventId})
     .then(
@@ -23,39 +23,57 @@ router.get('/:eventId',(req, res) => {
     )
 })
 
-router.post('/new-event',(req, res) => {
-    console.log(req)
-    console.log(req.body.seller)
+router.post("/new-event", (req, res) => {
+    eventSchema.create(req.body.events).then(newEvent => {
+      sellerSchema.create(req.body.seller).then(newSeller => {
+        console.log(newSeller._id)
+        console.log(newEvent._id)
+        // push new bookmark id into user.favorites array
+        newEvent.seller.push(newSeller._id);
+        // push new user id into bookmark.favorited array
+        newSeller.event.push(newEvent._id);
+        // save both or they wont persist
+        newEvent.save();
+        newSeller.save();
+        // send entire document back
+        res.json(newEvent);
+      });
+    });
+  });
 
-    let newSeller = {}
-    let newEvent = {}
+// router.post('/new-event',(req, res) => {
+//     console.log(req)
+//     console.log(req.body.seller)
 
-    function populateSeller() {
-    sellerSchema.create(req.body.seller)
-        .then(seller => {
-            newSeller = seller
-            console.log('newSeller', newSeller)
-        })
-    }
+//     let newSeller = {}
+//     let newEvent = {}
 
-    async function populateEvent() {
-    await populateSeller()
-    eventSchema.create(req.body.events)
-        .then(event => {
-            event.seller.push(newSeller._id)
-            event.save()
-            console.log('event', event)
-            .then(savedEvent => {
-                console.log(savedEvent)
-                newEvent = savedEvent       
-        })
+//     function populateSeller() {
+//     sellerSchema.create(req.body.seller)
+//         .then(seller => {
+//             newSeller = seller
+//             console.log('newSeller', newSeller)
+//         })
+//     }
 
-    // .catch(error => res.json(error))
-    })}
+//     async function populateEvent() {
+//     await populateSeller()
+//     eventSchema.create(req.body.events)
+//         .then(event => {
+//             event.seller.push(newSeller._id)
+//             event.save()
+//             console.log('event', event)
+//             .then(savedEvent => {
+//                 console.log(savedEvent)
+//                 newEvent = savedEvent       
+//         })
+
+//     // .catch(error => res.json(error))
+//     })}
     
-    populateEvent()
+//     populateEvent()
 
-})
+// })
 
 router.put('/:eventId/new-item',(req, res) => {
     console.log(req)

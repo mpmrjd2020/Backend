@@ -4,11 +4,11 @@ const SellersSchema = new mongoose.Schema({
     name: String,
     event: [
         {
-            ref: "Events",
+            ref: "Event",
             type: mongoose.Schema.Types.ObjectId
         } ]
 })
 
-const Seller = mongoose.model("Sellers", SellersSchema);
+const Seller = mongoose.model("Seller", SellersSchema);
 
 module.exports = Seller
