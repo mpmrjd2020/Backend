@@ -9,6 +9,6 @@ const SellersSchema = new mongoose.Schema({
     //     } ]
 })
 
-const Seller = mongoose.model("Seller", SellersSchema);
+const Seller = mongoose.model("Sellers", SellersSchema);
 
 module.exports = Seller

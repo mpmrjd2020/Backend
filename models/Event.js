@@ -1,4 +1,4 @@
-const mongoose = require("../db/connections");
+const mongoose = require('../db/connections')
 
 const EventsSchema = new mongoose.Schema({
     eDescription: String,
@@ -19,6 +19,6 @@ const EventsSchema = new mongoose.Schema({
     
 })
 
-const Event = mongoose.model("Events", EventsSchema);
+const Event = mongoose.model("Events", EventsSchema)
 
-module.exports = Event;
+module.exports = Event

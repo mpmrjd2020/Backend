@@ -2,8 +2,6 @@ const express = require("express")
 const router = express.Router()
 
 const eventSchema= require("../models/Event");
-const Event= require("../models/Event");
-const Seller = require("../models/Seller")
 const itemSchema = require("../models/Item");
 const sellerSchema = require("../models/Seller")
 
@@ -28,13 +26,8 @@ router.post('/new-event',(req, res) => {
     console.log(req)
     console.log(req.body.seller)
 
-  // DELETE EVENT BY ID
-  router.delete("/:id", (req, res) => {
-    Event.findOneAndDelete({ _id: req.params.id }).then(deleted => {
-      res.json(deleted);
-    });
-  });
-  
+    let newSeller = {}
+    let newEvent = {}
 
     function populateSeller() {
     sellerSchema.create(
@@ -60,20 +53,6 @@ router.post('/new-event',(req, res) => {
         })
     
     
-//     // eventSchema.create(req.body.event)
-//     //     .then(newEvent => {
-//     //     sellerSchema.create(req.body.seller)
-//     //         .then(newSeller => {
-//     //         newSeller.save()})
-//     //     .then
-//     //         newEvent.seller = newSeller._id
-
-//     //         newEvent.save()
-             
-    //         res.json(newEvent)
-    //         res.json(newSeller)
-    //     })
-    })}
     eventSchema.create(req.body.events)
         .then(newEvent => {
         sellerSchema.create(req.body.seller)
@@ -137,16 +116,6 @@ router.delete('/:eventDeleteID', (req, res) => {
 //             )
 //         )
 // })
-
-// // router.get('/:eventId/items',(req, res) => {
-// //     eventSchema.find({_id: req.params.eventId})
-// //         .then(
-// //             (event) => res.json(event),
-// //             itemSchema.find(`/${req.params.items}}`) 
-// //             .then(item => res.json(item)
-// //             )
-// //         )
-// // })
 
 router.post('/sellers',(req, res) => {
     let newSeller = req.body
