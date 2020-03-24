@@ -20,7 +20,7 @@ app.use(parser.json())
 //   });
 
 
-app.use('/event/', eventsController)
+app.use('/', eventsController)
 app.use('/item/', itemsController)
 // app.use('/seller/', sellersController)
 
