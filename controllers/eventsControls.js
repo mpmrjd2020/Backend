@@ -29,24 +29,29 @@ router.post('/',(req, res) => {
     let newSeller = {}
     let newEvent = {}
 
+    function populateSeller() {
     sellerSchema.create(
         req.body.seller
     ).then(seller => {
         newSeller = seller
         console.log('newSeller', newSeller)
     })
+    }
     
+    async function populateEvent() {
+    await populateSeller()
     eventSchema.create(
         req.body.event
     ).then(event => {
         event.seller = newSeller._id
         event.save()
-            console.log(event)
-            .then(savedEvent => {
-                console.log(savedEvent)
-                newEvent = savedEvent
+            console.log('event', event)
+        //     .then(savedEvent => {
+        //         console.log(savedEvent)
+        //         newEvent = savedEvent
             
-        })
+        // })
+    
     
     // eventSchema.create(req.body.event)
     //     .then(newEvent => {
@@ -61,7 +66,9 @@ router.post('/',(req, res) => {
     //         res.json(newEvent)
     //         res.json(newSeller)
     //     })
-    })
+    })}
+
+    populateEvent()
     // .catch(error => res.json(error))
 })
 
