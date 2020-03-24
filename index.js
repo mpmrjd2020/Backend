@@ -10,6 +10,7 @@ const eventsController = require('./controllers/eventsControls')
 // const sellersController = require('./controllers/sellerControls')
 
 app.use(cors())
+app.use(express.json())
 // 2. Add the code needed to make body-parser work within your app.
 app.use(parser.urlencoded({extended: true}))
 app.use(parser.json())

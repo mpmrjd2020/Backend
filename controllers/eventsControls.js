@@ -9,23 +9,60 @@ router.get('/',(req, res) => {
     eventSchema.find({}).then(event => res.json(event))
 })
 
-// router.get('/:eventId',(req, res) => {
-//     console.log(req.params)
-//     eventSchema.findOne({_id: req.params.eventId})
-//     .then(
-//         event => (
-//             res.json(event)
-//             // event.items.map(singleE =>
-//             //     itemSchema.findById(singleE)
-//             //      .then(item => res.json(item))    )
-//             // )
-//             ))
-// })
+router.get('/:eventId',(req, res) => {
+    console.log(req.params)
+    eventSchema.findOne({_id: req.params.eventId})
+    .then(
+        event => (
+            res.json(event)
+            // event.items.map(singleE =>
+            //     itemSchema.findById(singleE)
+            //      .then(item => res.json(item))    )
+            // )
+            ))
+})
 
-router.post('/newEvent/Update',(req, res) => {
-    eventSchema
-    .create(req.body)
-    .then(event => res.json(event))
+router.post('/',(req, res) => {
+    console.log(req)
+    console.log(req.body.seller)
+
+    let newSeller = {}
+    let newEvent = {}
+
+    sellerSchema.create(
+        req.body.seller
+    ).then(seller => {
+        newSeller = seller
+        console.log('newSeller', newSeller)
+    })
+    
+    eventSchema.create(
+        req.body.event
+    ).then(event => {
+        event.seller = newSeller._id
+        event.save()
+            console.log(event)
+            .then(savedEvent => {
+                console.log(savedEvent)
+                newEvent = savedEvent
+            
+        })
+    
+    // eventSchema.create(req.body.event)
+    //     .then(newEvent => {
+    //     sellerSchema.create(req.body.seller)
+    //         .then(newSeller => {
+    //         newSeller.save()})
+    //     .then
+    //         newEvent.seller = newSeller._id
+
+    //         newEvent.save()
+             
+    //         res.json(newEvent)
+    //         res.json(newSeller)
+    //     })
+    })
+    // .catch(error => res.json(error))
 })
 
 // router.get('/:eventId/items',(req, res) => {
