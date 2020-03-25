@@ -75,16 +75,17 @@ router.post("/new-event", (req, res) => {
 
 // })
 
-router.put('/:eventId/new-item',(req, res) => {
+router.put('/new-item',(req, res) => {
     console.log(req)
     console.log('req params', req.params.eventId)
 
-    const eventID = req.params.eventId
+    const eventID = req.body.event._id
+    // const eventID = req.params.eventId
     let newItem = {}
 
-    function populateItem() {
+        function populateItem() {
         itemSchema.create(
-            req.body
+            req.body.item
         ).then(item => {
             newItem = item
             console.log('newSeller', newItem)
