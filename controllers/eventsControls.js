@@ -9,19 +9,97 @@ router.get('/',(req, res) => {
     eventSchema.find({}).then(event => res.json(event))
 })
 
+
 router.get('/event/:eventId',(req, res) => {
-    console.log(req.params)
+    // eventSchema.find({}).then(event => res.json(event))
+    let itemIdArr = []
+    let eventSellerItem = {}
     eventSchema.findOne({_id: req.params.eventId})
-    .then(
-        event => (
-            res.json(event)
-            // event.items.map(singleE =>
-            //     itemSchema.findById(singleE)
-            //      .then(item => res.json(item))    )
-            // )
+        .then(event => {
+            if (event.items.length !== 0) {
+                event.items.map(ev => (
+                    console.log('ev',ev),
+                    itemIdArr.push(ev),
+                    itemSchema.findById(ev)
+                            .then(item => {
+                                console.log(event),
+                                console.log(item),
+                                event = ({event, item})
+                                // eventSellerItem = ({event, item})
+                                // res.json(eventSellerItem)
+                            })
+                    )
+                )  
+            } else {
+                eventSellerItem = {event}
+                // res.json(eventSellerItem )
+            }
+            if (event.seller.length !== 0) {
+                event.seller.map(ev => (
+                    console.log('ev',ev),
+                    sellerSchema.findById(ev)
+                            .then(seller => {
+                                console.log(event),
+                                console.log(seller),
+                                event = ({event, seller})
+                                res.json(event)
+                            })
+                    )
+                )  
+            } else {
+                // eventSellerItem = {event}
+                res.json(eventSellerItem )
+            }
+                // .error(error => console.log(error))        
+    
+        }
         )
-    )
+        // .then(seller => {
+        //     if (event.seller.length !== 0) {
+        //         event.seller.map(ev => (
+        //             console.log('ev',ev),
+        //             sellerSchema.findById(ev)
+        //                     .then(seller => {
+        //                         console.log(event),
+        //                         console.log(seller),
+        //                         eventSellerItem = ({eventSellerItem, seller})
+        //                         res.json(eventSellerItem)
+        //                     })
+        //             )
+        //         )  
+        //     } else {
+        //         // eventSellerItem = {event}
+        //         res.json(eventSellerItem )
+        //     }
+        // })
+    
+            // console.log(event.items),
+            //     event.items.map(singleE =>
+            //         console.log('singleE', singleE),
+            //         itemSchema.findById(singleE)
+            //         .then(item => 
+            //             console.log(item),
+            //             res.json(event),
+            //             res.json(item)
+            //             )    
+            //     )
+            // )
 })
+
+
+// router.get('/event/:eventId',(req, res) => {
+//     console.log(req.params)
+//     eventSchema.findOne({_id: req.params.eventId})
+//     .then(
+//         event => (
+//             res.json(event)
+//             // event.items.map(singleE =>
+//             //     itemSchema.findById(singleE)
+//             //      .then(item => res.json(item))    )
+//             // )
+//         )
+//     )
+// })
 
 router.post("/new-event", (req, res) => {
     eventSchema.create(req.body.events).then(newEvent => {
