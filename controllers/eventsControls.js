@@ -6,7 +6,10 @@ const itemSchema = require("../models/Item");
 const sellerSchema = require("../models/Seller")
 
 router.get('/',(req, res) => {
-    eventSchema.find({}).then(event => res.json(event))
+    eventSchema.find({})
+    .populate('items')
+    .populate('seller')
+    .then(event => res.json(event))
 })
 
 
@@ -53,37 +56,8 @@ router.get('/event/:eventId',(req, res) => {
                 // .error(error => console.log(error))        
     
         }
-        )
-        // .then(seller => {
-        //     if (event.seller.length !== 0) {
-        //         event.seller.map(ev => (
-        //             console.log('ev',ev),
-        //             sellerSchema.findById(ev)
-        //                     .then(seller => {
-        //                         console.log(event),
-        //                         console.log(seller),
-        //                         eventSellerItem = ({eventSellerItem, seller})
-        //                         res.json(eventSellerItem)
-        //                     })
-        //             )
-        //         )  
-        //     } else {
-        //         // eventSellerItem = {event}
-        //         res.json(eventSellerItem )
-        //     }
-        // })
-    
-            // console.log(event.items),
-            //     event.items.map(singleE =>
-            //         console.log('singleE', singleE),
-            //         itemSchema.findById(singleE)
-            //         .then(item => 
-            //             console.log(item),
-            //             res.json(event),
-            //             res.json(item)
-            //             )    
-            //     )
-            // )
+        )    
+
 })
 
 
@@ -106,22 +80,18 @@ router.post("/new-event", (req, res) => {
       sellerSchema.create(req.body.seller).then(newSeller => {
         console.log(newSeller._id)
         console.log(newEvent._id)
-        // push new bookmark id into user.favorites array
+
         newEvent.seller.push(newSeller._id);
-        // push new user id into bookmark.favorited array
+
         newSeller.event.push(newEvent._id);
-        // save both or they wont persist
+
         newEvent.save();
         newSeller.save();
-        // send entire document back
+
         res.json(newEvent);
       });
     });
   });
-
-// router.post('/new-event',(req, res) => {
-//     console.log(req)
-//     console.log(req.body.seller)
 
 //     let newSeller = {}
 //     let newEvent = {}
@@ -185,7 +155,7 @@ router.put('/new-item',(req, res) => {
 })
 
 
-router.delete('/:eventDeleteID', (req, res) => {
+router.delete('/event/:eventDeleteID', (req, res) => {
     eventSchema.findByIdAndDelete(req.params.eventDeleteID).then
     (eventD => res.json(eventD))
 })
