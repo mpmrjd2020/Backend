@@ -160,6 +160,19 @@ router.delete('/event/:eventDeleteID', (req, res) => {
     (eventD => res.json(eventD))
 })
 
+router.delete('/new-item/:eventId/:itemId',(req, res) => {
+    const eventID = req.params.itemId
+    console.log(req)
+    itemSchema.findOneAndDelete({_id: req.params.itemId}).then(itemDelete => {
+        res.json(itemDelete)
+    })
+
+    eventSchema.findOne({_id: req.params.eventId}).then((eventRemoveItemRef, i, arr) => {
+        eventRemoveItemRef.items.splice(i,1)   
+        eventRemoveItemRef.save() 
+        console.log(eventRemoveItemRef)
+    })
+})
 
 router.post('/sellers',(req, res) => {
     let newSeller = req.body
