@@ -5,6 +5,8 @@ const eventSchema = require("../models/Event");
 const itemSchema = require("../models/Item");
 const sellerSchema = require("../models/Seller")
 
+
+//Get all events and related items and the seller
 router.get('/',(req, res) => {
     eventSchema.find({})
     .populate('items')
@@ -12,69 +14,7 @@ router.get('/',(req, res) => {
     .then(event => res.json(event))
 })
 
-
-router.get('/event/:eventId',(req, res) => {
-    // eventSchema.find({}).then(event => res.json(event))
-    let itemIdArr = []
-    let eventSellerItem = {}
-    eventSchema.findOne({_id: req.params.eventId})
-        .then(event => {
-            if (event.items.length !== 0) {
-                event.items.map(ev => (
-                    console.log('ev',ev),
-                    itemIdArr.push(ev),
-                    itemSchema.findById(ev)
-                            .then(item => {
-                                console.log(event),
-                                console.log(item),
-                                event = ({event, item})
-                                // eventSellerItem = ({event, item})
-                                // res.json(eventSellerItem)
-                            })
-                    )
-                )  
-            } else {
-                eventSellerItem = {event}
-                // res.json(eventSellerItem )
-            }
-            if (event.seller.length !== 0) {
-                event.seller.map(ev => (
-                    console.log('ev',ev),
-                    sellerSchema.findById(ev)
-                            .then(seller => {
-                                console.log(event),
-                                console.log(seller),
-                                event = ({event, seller})
-                                res.json(event)
-                            })
-                    )
-                )  
-            } else {
-                // eventSellerItem = {event}
-                res.json(eventSellerItem )
-            }
-                // .error(error => console.log(error))        
-    
-        }
-        )    
-
-})
-
-
-// router.get('/event/:eventId',(req, res) => {
-//     console.log(req.params)
-//     eventSchema.findOne({_id: req.params.eventId})
-//     .then(
-//         event => (
-//             res.json(event)
-//             // event.items.map(singleE =>
-//             //     itemSchema.findById(singleE)
-//             //      .then(item => res.json(item))    )
-//             // )
-//         )
-//     )
-// })
-
+//Add a new ebent with the seller attached to that event
 router.post("/new-event", (req, res) => {
     eventSchema.create(req.body.events).then(newEvent => {
       sellerSchema.create(req.body.seller).then(newSeller => {
@@ -93,36 +33,7 @@ router.post("/new-event", (req, res) => {
     });
   });
 
-//     let newSeller = {}
-//     let newEvent = {}
-
-//     function populateSeller() {
-//     sellerSchema.create(req.body.seller)
-//         .then(seller => {
-//             newSeller = seller
-//             console.log('newSeller', newSeller)
-//         })
-//     }
-
-//     async function populateEvent() {
-//     await populateSeller()
-//     eventSchema.create(req.body.events)
-//         .then(event => {
-//             event.seller.push(newSeller._id)
-//             event.save()
-//             console.log('event', event)
-//             .then(savedEvent => {
-//                 console.log(savedEvent)
-//                 newEvent = savedEvent       
-//         })
-
-//     // .catch(error => res.json(error))
-//     })}
-    
-//     populateEvent()
-
-// })
-
+//Add a new item and attached it to the event
 router.put('/new-item',(req, res) => {
     console.log(req)
     console.log('req params', req.params.eventId)
@@ -154,13 +65,14 @@ router.put('/new-item',(req, res) => {
 
 })
 
-
+//Delete an event
 router.delete('/event/:eventDeleteID', (req, res) => {
     eventSchema.findByIdAndDelete(req.params.eventDeleteID).then
     (eventD => res.json(eventD))
 })
 
-router.delete('/new-item/:eventId/:itemId',(req, res) => {
+//Delete an item and remove it from the schema
+router.delete('/delete-item/:eventId/:itemId',(req, res) => {
     const eventID = req.params.itemId
     console.log(req)
     itemSchema.findOneAndDelete({_id: req.params.itemId}).then(itemDelete => {
@@ -174,10 +86,14 @@ router.delete('/new-item/:eventId/:itemId',(req, res) => {
     })
 })
 
-router.post('/sellers',(req, res) => {
-    let newSeller = req.body
-    sellerSchema.create(newSeller)
-    .then(seller => res.json(seller))
+//Update and item 
+router.put('/update-item/:itemId',(req, res) => {
+    const eventID = req.params.itemId
+    console.log(req)
+    itemSchema.findOneAndUpdate({_id: req.params.itemId},req.body,{new:true})
+        .then(itemCostUpdate => {
+        res.json(itemCostUpdate)
+    })
 })
 
 
