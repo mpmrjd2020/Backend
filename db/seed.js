@@ -2,7 +2,7 @@ const mongoose = require("./connections");
 
 const eventSchema= require("../models/Event");
 const itemSchema = require("../models/Item");
-const sellerSchema = require("../models/Seller")
+const sellerSchema = require("../models/Seller");
 
 // clear the database of records using event and item models
 eventSchema.deleteMany({})

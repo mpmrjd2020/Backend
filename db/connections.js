@@ -2,8 +2,14 @@ const mongoose = require('mongoose')
 
 mongoose.Promise = Promise
 
-const mongoURI = 'mongodb://localhost/eSaleDB'
+// const mongoURI = 'mongodb://localhost/eSaleDB'
+let mongoURI = ""
 
+if (process.env.NODE_ENV === "production") {
+    mongoURI = process.env.MONGODB_URI;
+  } else {
+    mongoURI = "mongodb://localhost/eSaleDB";
+  }
 
 mongoose.set('useFindAndModify', false)
 
