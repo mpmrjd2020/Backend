@@ -5,7 +5,9 @@ const eventSchema = require("../models/Event");
 const itemSchema = require("../models/Item");
 const sellerSchema = require("../models/Seller")
 
-
+router.get('/foo', (req, res) => {
+    res.send('|||||')
+})
 //Get all events and related items and the seller
 router.get('/',(req, res) => {
     eventSchema.find({})
