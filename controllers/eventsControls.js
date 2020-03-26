@@ -74,13 +74,13 @@ router.delete('/event/:eventDeleteID', (req, res) => {
 //Delete an item and remove it from the schema
 router.delete('/delete-item/:eventId/:itemId',(req, res) => {
     const eventID = req.params.itemId
-    console.log(req)
     itemSchema.findOneAndDelete({_id: req.params.itemId}).then(itemDelete => {
         res.json(itemDelete)
     })
 
     eventSchema.findOne({_id: req.params.eventId}).then((eventRemoveItemRef, i, arr) => {
-        eventRemoveItemRef.items.splice(i,1)   
+        var n = eventRemoveItemRef.indexOf(eventID)
+        eventRemoveItemRef.items.splice(n,1)   
         eventRemoveItemRef.save() 
         console.log(eventRemoveItemRef)
     })
@@ -89,22 +89,8 @@ router.delete('/delete-item/:eventId/:itemId',(req, res) => {
 //Update an item 
 router.put('/update-item/:itemId',(req, res) => {
     const eventID = req.params.itemId
-    console.log(req)
     itemSchema.findOneAndUpdate({_id: req.params.itemId},req.body,{new:true})
         .then(itemCostUpdate => {
-        res.json(itemCostUpdate)
-    })
-})
-
-//Update item sold
-router.put('/update-item-sold/:itemId',(req, res) => {
-    const eventID = req.params.itemId
-    let itemSld = !req.params.sold
-
-    console.log(req)
-    itemSchema.findOneAndUpdate({_id: req.params.itemId},{"sold": itemSld},{new:true})
-        .then(itemCostUpdate => {
-        console.log(itemSld)
         res.json(itemCostUpdate)
     })
 })
